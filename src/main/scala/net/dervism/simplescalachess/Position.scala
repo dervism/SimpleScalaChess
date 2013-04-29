@@ -15,13 +15,13 @@ class Position {
   
   val board = new Array[Int](120)
   
-  override def toString() = {
+  override def toString = {
     val sb = new StringBuffer("[")
     for (i <- 22 until 100) {
       sb.append("" + board(i) + ",")
     }
     sb.append("]")
-    sb.toString()
+    sb.toString
   }
 }
 object Position {

@@ -8,8 +8,8 @@ trait GameSearch extends Log {
   /**
    * control values
    */
-  val PROGRAM = false;
-  val HUMAN = true;
+  val PROGRAM = false
+  val HUMAN = true
 
   /**
    * disable debug logging
@@ -22,7 +22,7 @@ trait GameSearch extends Log {
   def drawnPosition(p: Position): Boolean
   def wonPosition(p: Position, player: Boolean): Boolean
   def positionEvaluation(p: Position, player: Boolean): Float
-  def printPosition(p: Position): Unit
+  def printPosition(p: Position)
   def possibleMoves(p: Position, player: Boolean): Array[Position]
   def makeMove(p: Position, player: Boolean, move: Move): Position
   def reachedMaxDepth(p: Position, depth: Int): Boolean
@@ -38,7 +38,7 @@ trait GameSearch extends Log {
   }
 
   protected def alphaBeta(depth: Int, p: Position, player: Boolean): SearchResult = {
-    return alphaBetaHelper(depth, p, player, 1000000.0f, -1000000.0f);
+    alphaBetaHelper(depth, p, player, 1000000.0f, -1000000.0f)
   }
 
   /**
@@ -51,10 +51,10 @@ trait GameSearch extends Log {
     if (reachedMaxDepth(p, depth)) {
       val score = positionEvaluation(p, player)
       //debug("score = " + score + " player: " + player);
-      return SearchResult(score, List(p));
+      return SearchResult(score, List(p))
     }
     
-    val moves = possibleMoves(p, player);
+    val moves = possibleMoves(p, player)
     var best = new ListBuffer[Position]
     var eval = beta
     
@@ -75,7 +75,7 @@ trait GameSearch extends Log {
 
           if (eval >= alpha) {
             print("eval > alpha")
-            break
+            break()
           }
         }
       }
@@ -87,7 +87,7 @@ trait GameSearch extends Log {
   /**
    * Version 2: replaced breaks with boolean
    */
-  def playGame(initialPosition: Position, humanPlayFirst: Boolean): Unit = {
+  def playGame(initialPosition: Position, humanPlayFirst: Boolean) {
 
     var startingPosition = initialPosition
 

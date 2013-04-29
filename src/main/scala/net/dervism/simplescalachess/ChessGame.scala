@@ -28,7 +28,7 @@ class ChessGame extends GameSearch {
   var control = new Array[Float](120)
   val computerControl = new Array[Float](120)
   val humanControl = new Array[Float](120)
-  var in: java.io.BufferedReader = null;
+  var in: java.io.BufferedReader = null
 
   def drawnPosition(p: Position): Boolean = {
     // We want to keep searching:
@@ -63,8 +63,8 @@ class ChessGame extends GameSearch {
     control += humanControl(65) - computerControl(65)
     control += humanControl(66) - computerControl(66)
 
-    control /= 10.0f;
-    ret += control;
+    control /= 10.0f
+    ret += control
 
     // credit for attacked pieces:
     for (i <- 22 until 100) {
@@ -73,42 +73,42 @@ class ChessGame extends GameSearch {
           if (humanControl(i) > computerControl(i)) {
             ret += 0.9f * value(-b(i))
           }
-          if (b(i) == -Position.QUEEN && humanControl(i) > 0) ret += 2;
-          if (b(i) == -Position.KING && humanControl(i) > 0) ret += 4;
+          if (b(i) == -Position.QUEEN && humanControl(i) > 0) ret += 2
+          if (b(i) == -Position.KING && humanControl(i) > 0) ret += 4
         }
         if (b(i) > 0) {
           if (humanControl(i) < computerControl(i)) {
             ret -= 0.9f * value(b(i))
           }
-          if (b(i) == Position.QUEEN && humanControl(i) > 0) ret -= 2;
-          if (b(i) == Position.KING && humanControl(i) > 0) ret -= 4;
+          if (b(i) == Position.QUEEN && humanControl(i) > 0) ret -= 2
+          if (b(i) == Position.KING && humanControl(i) > 0) ret -= 4
         }
       }
     }
     // adjust if computer side to move:
-    if (!player) ret = -ret;
+    if (!player) ret = -ret
 
-    return ret;
+    ret
   }
 
-  def printPosition(p: Position): Unit = {
-    debug("Board position:");
+  def printPosition(p: Position) {
+    debug("Board position:")
     val pos = p
-    val b = pos.board;
+    val b = pos.board
 
     for (col <- 92 to 22 by -10) {
       println(" ")
       for (ii <- 0 until 8) {
         val i = ii + col
         if (b(i) != 0) {
-          print(pp(b(i), i));
+          print(pp(b(i), i))
         } else {
-          var white_sq = true;
+          var white_sq = true
           breakable {
             for (k <- 0 until blackSquares.length) {
               if (i == blackSquares(k)) {
-                white_sq = false;
-                break
+                white_sq = false
+                break()
               }
             }
           }
@@ -138,17 +138,17 @@ class ChessGame extends GameSearch {
       case 9 => return " " + color + "K"
     }
 
-    "error";
+    "error"
   }
 
   def possibleMoves(p: Position, player: Boolean): Array[Position] = {
     //debug("posibleMoves(" + p + "," + player + ")");
     //System.out.println("Chess.possibleMoves(): pos=" + pos);
     //for (int i=22; i<40; i++) System.out.println(pos.board[i]);
-    val num = calcPossibleMoves(p, player);
+    val num = calcPossibleMoves(p, player)
     if (num == 0) {
-      System.out.println("Stalemate");
-      System.exit(0);
+      System.out.println("Stalemate")
+      System.exit(0)
     }
     val chessPos = new Array[Position](num)
     for (i <- 0 until num) {
@@ -157,7 +157,7 @@ class ChessGame extends GameSearch {
       chessPos(i).board(possibleMoveList(i).to) = chessPos(i).board(possibleMoveList(i).from)
       chessPos(i).board(possibleMoveList(i).from) = 0
     }
-    chessPos;
+    chessPos
   }
 
   def makeMove(pos: Position, player: Boolean, m: Move): Position = {
@@ -179,20 +179,20 @@ class ChessGame extends GameSearch {
 
   def reachedMaxDepth(p: Position, depth: Int): Boolean = {
     if (depth < 5) return false
-    return true
+    true
   }
 
   def createMove(): Move = {
-    debug("Enter blank square index [0,8]:");
+    debug("Enter blank square index [0,8]:")
     val mm = Move()
-    System.out.println("enter a move like 'd2d4' or 'oo'");
+    System.out.println("enter a move like 'd2d4' or 'oo'")
 
     try {
       if (in == null) {
         in = new java.io.BufferedReader(new java.io.InputStreamReader(System.in))
       }
-      val s = in.readLine().toLowerCase();
-      System.out.println("s=" + s);
+      val s = in.readLine().toLowerCase
+      System.out.println("s=" + s)
 
       // TODO: check for oo and ooo:
 
@@ -200,17 +200,17 @@ class ChessGame extends GameSearch {
       val r0 = (s.charAt(1) - '1' + 2).toChar
       val c1 = (s.charAt(2) - 'a' + 2).toChar
       val r1 = (s.charAt(3) - '1' + 2).toChar
-      mm.from = r0 * 10 + c0;
-      mm.to = r1 * 10 + c1;
-      System.out.println("From " + mm.from + ", to " + mm.to);
+      mm.from = r0 * 10 + c0
+      mm.to = r1 * 10 + c1
+      System.out.println("From " + mm.from + ", to " + mm.to)
     } catch {
-      case e: Exception => error(e);
+      case e: Exception => error(e)
     }
 
-    return mm;
+    mm
   }
 
-  def setControlData(pos: Position): Unit = {
+  def setControlData(pos: Position) {
     //debug("setControlData: " + pos)
 
     for (i <- 0 until 120) {
@@ -221,7 +221,7 @@ class ChessGame extends GameSearch {
     val b = pos.board
 
     for (square_index <- 22 until 100) {
-      var piece = b(square_index)
+      val piece = b(square_index)
 
       if (piece != 7 && piece != 0) {
         var piece_type = piece
@@ -240,8 +240,8 @@ class ChessGame extends GameSearch {
         if (piece_type == Position.PAWN) {
           // first check for possible pawn captures:
           for (delta <- -1 to 1 by 2) {
-            move_offset = square_index + side_index * 10 + delta;
-            control(move_offset) += 1.1f;
+            move_offset = square_index + side_index * 10 + delta
+            control(move_offset) += 1.1f
             val target = b(move_offset)
             if ((target <= -1 && target != 7 && piece > 0) ||
               (target >= 1 && target != 7 && piece < 0)) {
@@ -260,13 +260,13 @@ class ChessGame extends GameSearch {
               while ((next_square <= 99 && next_square >= 22 && b(next_square) != 7)) {
                 // the next statement should be augmented for x-ray analysis:
                 if ((side_index < 0 && b(next_square) < 0) ||
-                  (side_index > 0 && b(next_square) > 0 && b(next_square) != 7)) break
+                  (side_index > 0 && b(next_square) > 0 && b(next_square) != 7)) break()
                 // NOTE: prevents calculating guarding:
                 //if (b[next_square] != 0) break inner;
 
                 control(next_square) += 1.0f
                 if ((piece_type == Position.PAWN && (square_index / 10 == 3)) ||
-                  (piece_type == Position.KNIGHT || piece_type == Position.KING)) break
+                  (piece_type == Position.KNIGHT || piece_type == Position.KING)) break()
 
                 next_square += pieceMovementTable(move_index)
               }
@@ -307,14 +307,14 @@ class ChessGame extends GameSearch {
 
   def calcPieceMoves(pos: Position, square_index: Int): Int = {
     //debug("calcPieceMoves: " + pos)
-    val b = pos.board;
+    val b = pos.board
     val piece = b(square_index)
     var piece_type = piece
 
     if (piece_type < 0) piece_type = -piece_type
 
     var count, side_index, move_offset, temp, next_square = 0
-    var piece_index = index(piece_type)
+    val piece_index = index(piece_type)
     var move_index = pieceMovementTable(piece_index)
 
     if (piece < 0) side_index = -1 else side_index = 1
@@ -342,7 +342,7 @@ class ChessGame extends GameSearch {
           piece_moves(count) = square_index + side_index * 20
         }
         // try to move forward 1 square:
-        move_offset = square_index + side_index * 10;
+        move_offset = square_index + side_index * 10
         if (b(move_offset) == 0) {
           count += 1
           piece_moves(count) = move_offset
@@ -359,19 +359,19 @@ class ChessGame extends GameSearch {
             while ((next_square <= 99 && next_square >= 22 && b(next_square) != 7)) {
 
               // check for piece on the same side:
-              if (side_index < 0 && b(next_square) < 0) break
-              if (side_index > 0 && b(next_square) > 0) break
+              if (side_index < 0 && b(next_square) < 0) break()
+              if (side_index > 0 && b(next_square) > 0) break()
 
               count += 1
               piece_moves(count) = next_square
 
-              if (b(next_square) != 0) break
-              if (piece_type == Position.KNIGHT | piece_type == Position.KING) break
+              if (b(next_square) != 0) break()
+              if (piece_type == Position.KNIGHT | piece_type == Position.KING) break()
 
               next_square += pieceMovementTable(move_index)
             }
           }
-          move_index += 1;
+          move_index += 1
         } while (pieceMovementTable(move_index) != 0)
       }
     }

@@ -6,7 +6,7 @@ import net.dervism.simplescalachess.BreakableByName._
  * Hello world!
  *
  */
-object App extends Application with Log {
+object Runner extends App with Log {
   override def loginfo = true
   
   // checking logging
@@ -59,7 +59,7 @@ object App extends Application with Log {
   
     var p = new Position()
     for (i <- 0 until 120) p.board(i) = ChessGame.initialBoard(i)
-    val ttt = new ChessGame();
+    val ttt = new ChessGame()
     /* DEBUG*/ //  ttt.setControlData(p);
-    ttt.playGame(p, true);
+    ttt.playGame(p, true)
 }
